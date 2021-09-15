@@ -13,7 +13,9 @@ package org.bhaduri.fractalwave;
  * https://stackoverflow.com/questions/2702980/java-loop-every-minute
  */
 import java.io.IOException;
-import java.security.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;  
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.http.HttpEntity;
@@ -22,7 +24,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,11 +64,18 @@ public class PerMinuteResposeOfNSE {
                                                 
                         JSONObject scripObj = dataArray.getJSONObject(i);                        
                         ScripData scripData = loadScripData(scripObj);
+//                        saveSripData(scripData);
+                        System.out.println("symbol"+scripData.getScripId());
+                        System.out.println("open"+scripData.getOpenPrice());
+                        System.out.println("day high"+scripData.getDayHighPrice());
+                        System.out.println("day low"+scripData.getDayLowPrice());
+                        System.out.println("day current"+scripData.getDayLastPrice());
+                        System.out.println("prev close"+scripData.getPrevClosePrice());
+                        System.out.println("trade volume"+scripData.getTotalTradedVolume());
+                        System.out.println("last update"+scripData.getLastUpdateTime());
+                                                
                         
-                        System.out.println(scripData.toString());
-                        
-  //                      System.out.println(object.get("symbol"));
-                    }
+                      }
   //                System.out.println(n50Resp);
                 }
                 Thread.sleep(60 * 1000);
@@ -84,39 +92,44 @@ public class PerMinuteResposeOfNSE {
     }
     private ScripData loadScripData(JSONObject scripObj) {
         ScripData scripData = new ScripData();
-        try {
-            
+        try {           
             
             String sym = scripObj.get("identifier").toString();
             scripData.setScripId(sym);
             
-            Double openPrice = (Double) scripObj.get("open");
+            Double openPrice = Double.valueOf(scripObj.get("open").toString());
             scripData.setOpenPrice(openPrice);
             
-            Double dayHighPrice = (Double) scripObj.get("dayHigh");
+            Double dayHighPrice = Double.valueOf(scripObj.get("dayHigh").toString());
             scripData.setDayHighPrice(dayHighPrice);
             
-            Double dayLowPrice = (Double) scripObj.get("dayLow");
+            Double dayLowPrice = Double.valueOf(scripObj.get("dayLow").toString());
             scripData.setDayLowPrice(dayLowPrice);
             
-            Integer dayLastPrice = (Integer) scripObj.get("lastPrice");
+            Double dayLastPrice = Double.valueOf(scripObj.get("lastPrice").toString());
             scripData.setDayLastPrice(dayLastPrice);
             
-            Double prevClosePrice = (Double) scripObj.get("previousClose");
+            Double prevClosePrice = Double.valueOf(scripObj.get("previousClose").toString());
             scripData.setPrevClosePrice(prevClosePrice);
             
-            Integer totalTradedVolume = (Integer) scripObj.get("totalTradedVolume");
+            Double totalTradedVolume = Double.valueOf(scripObj.get("totalTradedVolume").toString());
             scripData.setTotalTradedVolume(totalTradedVolume);
             
-            String lastUpdateTime = scripObj.get("lastUpdateTime").toString();
-            scripData.setLastUpdateTime(lastUpdateTime);
-            
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+            Date lastUpdateTime = dateFormat.parse(scripObj.get("lastUpdateTime").toString());
+            scripData.setLastUpdateTime(lastUpdateTime);            
             
         } catch (JSONException ex) {
+            Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
         }
         return scripData;
 
     }
+    
+//    private void saveSripData(ScripData scripData) {
+//        MinutedataJpaController minDataInsert = new MinutedataJpaController()
+//    }
 
 }

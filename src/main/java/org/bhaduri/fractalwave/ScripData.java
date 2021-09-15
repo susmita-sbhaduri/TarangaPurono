@@ -5,7 +5,7 @@
  */
 package org.bhaduri.fractalwave;
 
-import java.security.Timestamp;
+import java.util.Date;
 
 /**
  *
@@ -13,14 +13,14 @@ import java.security.Timestamp;
  */
 public class ScripData {
     private String scripId;
-    private String lastUpdateTime;
-    private Integer dayLastPrice;
-    private Integer totalTradedVolume;
+    private Date lastUpdateTime;
     private Double openPrice; 
+    private Double dayLastPrice;
     private Double dayHighPrice;
-    private Double dayLowPrice;    
-    private Double prevClosePrice;    
-
+    private Double dayLowPrice;   
+    private Double prevClosePrice;
+    private Double totalTradedVolume;
+    
     public String getScripId() {
         return scripId;
     }
@@ -29,27 +29,27 @@ public class ScripData {
         this.scripId = scripId;
     }
 
-    public String getLastUpdateTime() {
+    public Date getLastUpdateTime() {
         return lastUpdateTime;
     }
 
-    public void setLastUpdateTime(String lastUpdateTime) {
+    public void setLastUpdateTime(Date lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public Integer getDayLastPrice() {
+    public Double getDayLastPrice() {
         return dayLastPrice;
     }
 
-    public void setDayLastPrice(Integer dayLastPrice) {
+    public void setDayLastPrice(Double dayLastPrice) {
         this.dayLastPrice = dayLastPrice;
     }
 
-    public Integer getTotalTradedVolume() {
+    public Double getTotalTradedVolume() {
         return totalTradedVolume;
     }
 
-    public void setTotalTradedVolume(Integer totalTradedVolume) {
+    public void setTotalTradedVolume(Double totalTradedVolume) {
         this.totalTradedVolume = totalTradedVolume;
     }
 
@@ -84,7 +84,8 @@ public class ScripData {
     public void setPrevClosePrice(Double prevClosePrice) {
         this.prevClosePrice = prevClosePrice;
     }
-    
+
+   
 
    
 }
