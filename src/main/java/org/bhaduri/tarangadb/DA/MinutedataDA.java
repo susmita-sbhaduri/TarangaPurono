@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.bhaduri.tarangdb.da;
+package org.bhaduri.tarangadb.DA;
 
 import javax.persistence.EntityManagerFactory;
-import org.bhaduri.tarangdb.JPA.MinutedataJpaController;
+import org.bhaduri.tarangadb.JPA.MinutedataJpaController;
 
 /**
  *

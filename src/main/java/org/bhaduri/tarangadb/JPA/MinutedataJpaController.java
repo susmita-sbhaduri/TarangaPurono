@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.bhaduri.tarangdb.JPA;
+package org.bhaduri.tarangadb.JPA;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,10 +13,10 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import org.bhaduri.tarangdb.JPA.exceptions.NonexistentEntityException;
-import org.bhaduri.tarangdb.JPA.exceptions.PreexistingEntityException;
-import org.bhaduri.tarangdb.entities.Minutedata;
-import org.bhaduri.tarangdb.entities.MinutedataPK;
+import org.bhaduri.tarangadb.JPA.exceptions.NonexistentEntityException;
+import org.bhaduri.tarangadb.JPA.exceptions.PreexistingEntityException;
+import org.bhaduri.tarangadb.entities.Minutedata;
+import org.bhaduri.tarangadb.entities.MinutedataPK;
 
 /**
  *

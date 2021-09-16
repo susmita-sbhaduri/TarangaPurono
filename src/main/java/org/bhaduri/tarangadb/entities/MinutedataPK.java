@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.bhaduri.tarangdb.entities;
+package org.bhaduri.tarangadb.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -78,7 +78,7 @@ public class MinutedataPK implements Serializable {
 
     @Override
     public String toString() {
-        return "org.bhaduri.tarangdb.entities.MinutedataPK[ scripid=" + scripid + ", lastupdateminute=" + lastupdateminute + " ]";
+        return "org.bhaduri.tarangadb.entities.MinutedataPK[ scripid=" + scripid + ", lastupdateminute=" + lastupdateminute + " ]";
     }
     
 }

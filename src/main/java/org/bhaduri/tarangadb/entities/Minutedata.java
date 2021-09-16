@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.bhaduri.tarangdb.entities;
+package org.bhaduri.tarangadb.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -44,10 +44,10 @@ public class Minutedata implements Serializable {
     private double daylowprice;
     @Basic(optional = false)
     @Column(name = "prevcloseprice")
-    private long prevcloseprice;
+    private double prevcloseprice;
     @Basic(optional = false)
     @Column(name = "totaltradedvolume")
-    private long totaltradedvolume;
+    private double totaltradedvolume;
 
     public Minutedata() {
     }
@@ -56,7 +56,7 @@ public class Minutedata implements Serializable {
         this.minutedataPK = minutedataPK;
     }
 
-    public Minutedata(MinutedataPK minutedataPK, double openprice, double daylastprice, double dayhighprice, double daylowprice, long prevcloseprice, long totaltradedvolume) {
+    public Minutedata(MinutedataPK minutedataPK, double openprice, double daylastprice, double dayhighprice, double daylowprice, double prevcloseprice, double totaltradedvolume) {
         this.minutedataPK = minutedataPK;
         this.openprice = openprice;
         this.daylastprice = daylastprice;
@@ -110,19 +110,19 @@ public class Minutedata implements Serializable {
         this.daylowprice = daylowprice;
     }
 
-    public long getPrevcloseprice() {
+    public double getPrevcloseprice() {
         return prevcloseprice;
     }
 
-    public void setPrevcloseprice(long prevcloseprice) {
+    public void setPrevcloseprice(double prevcloseprice) {
         this.prevcloseprice = prevcloseprice;
     }
 
-    public long getTotaltradedvolume() {
+    public double getTotaltradedvolume() {
         return totaltradedvolume;
     }
 
-    public void setTotaltradedvolume(long totaltradedvolume) {
+    public void setTotaltradedvolume(double totaltradedvolume) {
         this.totaltradedvolume = totaltradedvolume;
     }
 
@@ -148,7 +148,7 @@ public class Minutedata implements Serializable {
 
     @Override
     public String toString() {
-        return "org.bhaduri.tarangdb.entities.Minutedata[ minutedataPK=" + minutedataPK + " ]";
+        return "org.bhaduri.tarangadb.entities.Minutedata[ minutedataPK=" + minutedataPK + " ]";
     }
     
 }

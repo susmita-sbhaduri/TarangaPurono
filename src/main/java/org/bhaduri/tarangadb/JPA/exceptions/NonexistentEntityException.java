@@ -1,4 +1,4 @@
-package org.bhaduri.tarangdb.JPA.exceptions;
+package org.bhaduri.tarangadb.JPA.exceptions;
 
 public class NonexistentEntityException extends Exception {
     public NonexistentEntityException(String message, Throwable cause) {

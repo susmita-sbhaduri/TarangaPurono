@@ -1,4 +1,4 @@
-package org.bhaduri.tarangdb.JPA.exceptions;
+package org.bhaduri.tarangadb.JPA.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.bhaduri.tarangdb.JPA.exceptions;
+package org.bhaduri.tarangadb.JPA.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {
