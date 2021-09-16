@@ -52,13 +52,13 @@ public class PerMinuteResposeOfNSE {
         Date startDateTime;
         try {
             startDateTime = new SimpleDateFormat("HH:mm:ss").parse(startTimeStr);
+            SimpleDateFormat finalSdf = new SimpleDateFormat("hh:mm a");
+            System.out.println("current time " + finalSdf.format(startDateTime));
         } catch (ParseException ex) {
             Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        SimpleDateFormat finalSdf = new SimpleDateFormat("hh:mm a");
-
-        System.out.println("current time " + finalSdf.format(startDateTime));
+        
 
         int count = 0;
         try {
