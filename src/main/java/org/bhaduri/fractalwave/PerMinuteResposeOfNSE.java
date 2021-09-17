@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import  java.time.LocalTime;
+//import  java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -48,7 +48,7 @@ public class PerMinuteResposeOfNSE {
 
         // TODO code application logic here
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        String startTimeStr = "09:16:00";
+        String startTimeStr = "2021-09-17 10:47:15";
         Date startDateTime;
         try {
             startDateTime = new SimpleDateFormat("HH:mm:ss").parse(startTimeStr);
@@ -62,7 +62,7 @@ public class PerMinuteResposeOfNSE {
 
         int count = 0;
         try {
-            while (count < 2) {
+            while (count < 100) {
                 CloseableHttpResponse response = httpClient.execute(request);
 
                 // Get HttpResponse Status
@@ -85,7 +85,7 @@ public class PerMinuteResposeOfNSE {
 
                         JSONObject scripObj = dataArray.getJSONObject(i);
                         ScripData scripData = loadScripData(scripObj);
-//                          saveSripData(scripData);
+//                        saveSripData(scripData);
 //                        System.out.println("symbol" + scripData.getScripId());
 //                        System.out.println("open" + scripData.getOpenPrice());
 //                        System.out.println("day high" + scripData.getDayHighPrice());
@@ -113,7 +113,7 @@ public class PerMinuteResposeOfNSE {
         ScripData scripData = new ScripData();
         try {
 
-            String sym = scripObj.get("identifier").toString();
+            String sym = scripObj.get("symbol").toString();
             scripData.setScripId(sym);
 
             Double openPrice = Double.valueOf(scripObj.get("open").toString());
@@ -137,11 +137,12 @@ public class PerMinuteResposeOfNSE {
             SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
             Date lastUpdateTime = inputDateFormat.parse(scripObj.get("lastUpdateTime").toString());
 
-            SimpleDateFormat tempDateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-            String tempOutput = tempDateFormatter.format(lastUpdateTime);
-            Date finalDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(tempOutput);
+//            SimpleDateFormat tempDateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+//            String tempOutput = tempDateFormatter.format(lastUpdateTime);
+//            Date finalDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(tempOutput);
 
-            scripData.setLastUpdateTime(finalDate);
+//            scripData.setLastUpdateTime(finalDate);
+              scripData.setLastUpdateTime(lastUpdateTime);
 
         } catch (JSONException ex) {
             Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
