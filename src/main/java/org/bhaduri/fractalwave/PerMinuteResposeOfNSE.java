@@ -50,22 +50,29 @@ public class PerMinuteResposeOfNSE {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //date update for scheduling
                 
-        LocalTime startTime = LocalTime.parse("09:15:00"); //Hour-1:24, min, sec
-        System.out.println("startTime "+startTime);
-        
+        LocalTime startTime = LocalTime.parse("09:15:00"); //Hour-1:24, min, sec       
         
         SimpleDateFormat formatCurrent = new SimpleDateFormat("HH:mm:ss");
         String strResult = formatCurrent.format(new Date());
-        LocalTime currentTime = LocalTime.parse(strResult);
-        System.out.println("Time = " + currentTime);
+        LocalTime currentTime = LocalTime.parse(strResult);        
 
-        LocalTime endTime = LocalTime.parse("15:30:00"); //Hour-1:24, min, sec
-        System.out.println("endTime " + endTime);
+//        LocalTime endTime = LocalTime.parse("15:30:00"); //Hour-1:24, min, sec    
+        
+        LocalTime endTime = LocalTime.parse("16:00:00"); //Hour-1:24, min, sec  
         
 //https://www.geeksforgeeks.org/localtime-compareto-method-in-java-with-examples/
+        int flag = 0;
+        
+        if (currentTime.compareTo(startTime) > 0 && endTime.compareTo(currentTime) > 0) {
+            flag = 1;
+            System.out.println("startTime " + startTime);
+            System.out.println("Time = " + currentTime);
+            System.out.println("endTime " + endTime);
+        }
         int count = 0;
         try {
-            while (count < 2) {
+//            while (flag == 1) {
+            while (count < 5) {
                 CloseableHttpResponse response = httpClient.execute(request);
 
                 // Get HttpResponse Status
@@ -100,8 +107,17 @@ public class PerMinuteResposeOfNSE {
                     }
                     //                System.out.println(n50Resp);
                 }
-                Thread.sleep(10 * 60 * 1000);
+                Thread.sleep(12 * 1000); //seconds * mulliseconds
                 count = count + 1;
+               
+                strResult = formatCurrent.format(new Date());
+                currentTime = LocalTime.parse(strResult);
+                if (currentTime.compareTo(startTime) < 0 || endTime.compareTo(currentTime) < 0) {
+                    flag = 0;
+                    System.out.println("startTime "+startTime);
+                    System.out.println("Time = " + currentTime);
+                    System.out.println("endTime " + endTime);
+                }
             }
         } catch (IOException e) {
             System.out.println("IOException has occurred");
@@ -140,12 +156,13 @@ public class PerMinuteResposeOfNSE {
             SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
             Date lastUpdateTime = inputDateFormat.parse(scripObj.get("lastUpdateTime").toString());
 
-//            SimpleDateFormat tempDateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-//            String tempOutput = tempDateFormatter.format(lastUpdateTime);
-//            Date finalDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(tempOutput);
-//
-//            scripData.setLastUpdateTime(finalDate);
-              scripData.setLastUpdateTime(lastUpdateTime);
+            SimpleDateFormat tempDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            String tempOutput = tempDateFormatter.format(lastUpdateTime);
+            Date finalDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(tempOutput);
+           
+            scripData.setLastUpdateTime(finalDate);
+            
+//              scripData.setLastUpdateTime(lastUpdateTime);
 
         } catch (JSONException ex) {
             Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
