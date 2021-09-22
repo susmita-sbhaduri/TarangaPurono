@@ -24,7 +24,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "minutedata")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Minutedata.findAll", query = "SELECT m FROM Minutedata m")})
+    @NamedQuery(name = "Minutedata.findAll", query = "SELECT m FROM Minutedata m"),
+    @NamedQuery(name = "Minutedata.findByScripid", query = "SELECT m FROM Minutedata m WHERE m.minutedataPK.scripid = :scripid"),
+    @NamedQuery(name = "Minutedata.findByLastupdateminute", query = "SELECT m FROM Minutedata m WHERE m.minutedataPK.lastupdateminute = :lastupdateminute"),
+    @NamedQuery(name = "Minutedata.findByOpenprice", query = "SELECT m FROM Minutedata m WHERE m.openprice = :openprice"),
+    @NamedQuery(name = "Minutedata.findByDaylastprice", query = "SELECT m FROM Minutedata m WHERE m.daylastprice = :daylastprice"),
+    @NamedQuery(name = "Minutedata.findByDayhighprice", query = "SELECT m FROM Minutedata m WHERE m.dayhighprice = :dayhighprice"),
+    @NamedQuery(name = "Minutedata.findByDaylowprice", query = "SELECT m FROM Minutedata m WHERE m.daylowprice = :daylowprice"),
+    @NamedQuery(name = "Minutedata.findByPrevcloseprice", query = "SELECT m FROM Minutedata m WHERE m.prevcloseprice = :prevcloseprice"),
+    @NamedQuery(name = "Minutedata.findByTotaltradedvolume", query = "SELECT m FROM Minutedata m WHERE m.totaltradedvolume = :totaltradedvolume")})
 public class Minutedata implements Serializable {
 
     private static final long serialVersionUID = 1L;
