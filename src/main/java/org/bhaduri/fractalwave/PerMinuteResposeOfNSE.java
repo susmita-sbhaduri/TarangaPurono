@@ -198,7 +198,7 @@ public class PerMinuteResposeOfNSE {
             System.out.println("data exists"+scripData.getScripId()+scripData.getLastUpdateTime());
         }
         catch (Exception exception) {
-            System.out.println(exception +" has occurred.");
+            System.out.println(exception +" has occurred .");
         }
     }
 }
