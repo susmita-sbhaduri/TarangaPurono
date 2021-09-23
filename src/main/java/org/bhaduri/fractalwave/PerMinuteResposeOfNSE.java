@@ -12,15 +12,20 @@ package org.bhaduri.fractalwave;
  * https://stackoverflow.com/questions/15951032/jsonobject-classnotfoundexception
  * https://stackoverflow.com/questions/2702980/java-loop-every-minute
  * https://stackoverflow.com/questions/20212608/how-to-display-only-current-time-using-dateformat-getdatetimeinstance-in-andro
- * http://tutorials.jenkov.com/java-internationalization/simpledateformat.html -->java with milliseconds
- * https://stackoverflow.com/questions/13344994/mysql-5-6-datetime-doesnt-accept-milliseconds-microseconds -->mySQL
- * https://www.geeksforgeeks.org/localtime-compareto-method-in-java-with-examples/ -->comparing java LocalTimes
+ * http://tutorials.jenkov.com/java-internationalization/simpledateformat.html
+ * -->java with milliseconds
+ * https://stackoverflow.com/questions/13344994/mysql-5-6-datetime-doesnt-accept-milliseconds-microseconds
+ * -->mySQL
+ * https://www.geeksforgeeks.org/localtime-compareto-method-in-java-with-examples/
+ * -->comparing java LocalTimes
  */
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import org.apache.http.HttpEntity;
@@ -50,18 +55,18 @@ public class PerMinuteResposeOfNSE {
         // TODO code application logic here
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //date update for scheduling
-                
+
         LocalTime startTime = LocalTime.parse("09:15:00"); //Hour-1:24, min, sec       
-        
+
         SimpleDateFormat formatCurrent = new SimpleDateFormat("HH:mm:ss");
         String strResult = formatCurrent.format(new Date());
-        LocalTime currentTime = LocalTime.parse(strResult);        
+        LocalTime currentTime = LocalTime.parse(strResult);
 
         LocalTime endTime = LocalTime.parse("15:30:00"); //Hour-1:24, min, sec
-//        LocalTime endTime = LocalTime.parse("17:31:00"); //Hour-1:24, min, sec
-        
+//        LocalTime endTime = LocalTime.parse("18:31:00"); //Hour-1:24, min, sec
+
         int flag = 0;
-        
+
         if (currentTime.compareTo(startTime) > 0 && endTime.compareTo(currentTime) > 0) {
             flag = 1;
             System.out.println("startTime 1" + startTime);
@@ -69,36 +74,77 @@ public class PerMinuteResposeOfNSE {
             System.out.println("endTime 1" + endTime);
         }
         int count = 0;
-        try {
-            while (flag == 1) {
+        
+        while (flag == 1) {
 //            while (count < 5) {
-                CloseableHttpResponse response = httpClient.execute(request);
+            CloseableHttpResponse response = null;
+            try {
+                response = httpClient.execute(request);
+            } catch (IOException ex) {
+                Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-                // Get HttpResponse Status
+            // Get HttpResponse Status
 //                System.out.println(response.getProtocolVersion());              // HTTP/1.1
 //                System.out.println(response.getStatusLine().getStatusCode());   // 200
 //                System.out.println(response.getStatusLine().getReasonPhrase()); // OK
 //                System.out.println(response.getStatusLine().toString());        // HTTP/1.1 200 OK
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    // return it as a String
-                    String n50Resp = EntityUtils.toString(entity);
-                    JSONObject perMinResp = new JSONObject(n50Resp);
-                    //                   System.out.println(resultObject.get("body"));
-                    JSONObject bodyJsonObj = perMinResp.getJSONObject("body");
-                    //                   JSONArray tempArray = resultObject.getJSONArray("body");
-                    //                   System.out.println(tempArray);
-                    JSONArray dataArray = bodyJsonObj.getJSONArray("data");
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                // return it as a String
+                String n50Resp = "";
+                try {
+                    n50Resp = EntityUtils.toString(entity);
+                } catch (IOException ex) {
+                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (org.apache.http.ParseException ex) {
+                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JSONObject perMinResp = null;
+                try {
+                    perMinResp = new JSONObject(n50Resp);
+                } catch (JSONException ex) {
+                    System.out.println("Problem with perMinResp"+perMinResp);
+//                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //                   System.out.println(resultObject.get("body"));
+                JSONObject bodyJsonObj = new JSONObject();
+                try {
+                    bodyJsonObj = perMinResp.getJSONObject("body");
+                } catch (JSONException ex) {
+                    System.out.println("Problem with bodyJsonObj"+bodyJsonObj);
+//                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //                   JSONArray tempArray = resultObject.getJSONArray("body");
+                //                   System.out.println(tempArray);
+                JSONArray dataArray = null;
+                try {
+                    dataArray = bodyJsonObj.getJSONArray("data");
+                } catch (JSONException ex) {
+                    System.out.println("Problem with dataArray"+dataArray); 
+//                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-                    SimpleDateFormat inputCurrentDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                    String strLastUpdTime = inputCurrentDateFormat.format(new Date());
-                    Date lastUpdateTime = inputCurrentDateFormat.parse(strLastUpdTime);
-                    for (int i = 0; i < dataArray.length(); i++) {
+                SimpleDateFormat inputCurrentDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                String strLastUpdTime = inputCurrentDateFormat.format(new Date());
+                Date lastUpdateTime = null;
+                try {
+                    lastUpdateTime = inputCurrentDateFormat.parse(strLastUpdTime);
+                } catch (ParseException ex) {
+                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                for (int i = 0; i < dataArray.length(); i++) {
 
-                        JSONObject scripObj = dataArray.getJSONObject(i);
-                       
-                        ScripData scripData = loadScripData(scripObj, lastUpdateTime);
-                        saveSripData(scripData);
+                    JSONObject scripObj = null;
+                    try {
+                        scripObj = dataArray.getJSONObject(i);
+                    } catch (JSONException ex) {
+                        System.out.println("Problem with scripObj"+scripObj); 
+//                        Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    ScripData scripData = loadScripData(scripObj, lastUpdateTime);
+                    saveSripData(scripData);
 //                        System.out.println("symbol" + scripData.getScripId());
 //                        System.out.println("open" + scripData.getOpenPrice());
 //                        System.out.println("day high" + scripData.getDayHighPrice());
@@ -107,31 +153,30 @@ public class PerMinuteResposeOfNSE {
 //                        System.out.println("prev close" + scripData.getPrevClosePrice());
 //                        System.out.println("trade volume" + scripData.getTotalTradedVolume());
 //                        System.out.println("last update" + scripData.getLastUpdateTime());
-                    }
-                    //                System.out.println(n50Resp);
                 }
-                Thread.sleep(2 * 1000); //seconds * mulliseconds
-                count = count + 1;
-               
-                strResult = formatCurrent.format(new Date());
-                currentTime = LocalTime.parse(strResult);
-                if (currentTime.compareTo(startTime) < 0 || endTime.compareTo(currentTime) < 0) {
-                    flag = 0;
-                    System.out.println("startTime 0"+startTime);
-                    System.out.println("Time 0= " + currentTime);
-                    System.out.println("endTime 0" + endTime);
-                }
+                //                System.out.println(n50Resp);
             }
-        } catch (IOException e) {
-            System.out.println("IOException has occurred");
-        } catch (InterruptedException ex) {
-            System.out.println("InterruptedException has occurred");
-        } catch (JSONException ex) {
-            System.out.println("JSONException has occurred");
-        } catch (ParseException ex) {
-            System.out.println("ParseException has occurred");
+            try {
+                Thread.sleep(2 * 1000); //seconds * mulliseconds
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            count = count + 1;
+
+            strResult = formatCurrent.format(new Date());
+            currentTime = LocalTime.parse(strResult);
+            if (currentTime.compareTo(startTime) < 0 || endTime.compareTo(currentTime) < 0) {
+                flag = 0;
+                System.out.println("startTime 0" + startTime);
+                System.out.println("Time 0= " + currentTime);
+                System.out.println("endTime 0" + endTime);
+            }
         }
     }
+        
+    
+
+    
 
     private ScripData loadScripData(JSONObject scripObj, Date lastUpdateTime) {
         ScripData scripData = new ScripData();
@@ -157,19 +202,18 @@ public class PerMinuteResposeOfNSE {
 
             Double totalTradedVolume = Double.valueOf(scripObj.get("totalTradedVolume").toString());
             scripData.setTotalTradedVolume(totalTradedVolume);
-            
+
 //            SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
 //            Date lastUpdateTime = inputDateFormat.parse(scripObj.get("lastUpdateTime").toString());
 //
 //            SimpleDateFormat tempDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 //            String tempOutput = tempDateFormatter.format(lastUpdateTime);
 //            Date finalDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(tempOutput);
-            
-            scripData.setLastUpdateTime(lastUpdateTime);            
+            scripData.setLastUpdateTime(lastUpdateTime);
 
         } catch (JSONException ex) {
             System.out.println("JSONException has occurred");
-        } 
+        }
         return scripData;
 
     }
@@ -195,10 +239,9 @@ public class PerMinuteResposeOfNSE {
 
             minutedataDA.create(minDataRecord);
         } catch (PreexistingEntityException preexistingEntityException) {
-            System.out.println("data exists"+scripData.getScripId()+scripData.getLastUpdateTime());
-        }
-        catch (Exception exception) {
-            System.out.println(exception +" has occurred .");
+            System.out.println("data exists" + scripData.getScripId() + scripData.getLastUpdateTime());
+        } catch (Exception exception) {
+            System.out.println(exception + " has occurred .");
         }
     }
 }
