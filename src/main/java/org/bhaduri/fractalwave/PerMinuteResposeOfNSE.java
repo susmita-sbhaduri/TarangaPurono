@@ -81,7 +81,8 @@ public class PerMinuteResposeOfNSE {
             try {
                 response = httpClient.execute(request);
             } catch (IOException ex) {
-                Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("IOException with response"+response);
+//                Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             // Get HttpResponse Status
@@ -96,9 +97,14 @@ public class PerMinuteResposeOfNSE {
                 try {
                     n50Resp = EntityUtils.toString(entity);
                 } catch (IOException ex) {
-                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("IOException with n50Resp"+n50Resp);
+//                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (org.apache.http.ParseException ex) {
-                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("ParseException with n50Resp"+n50Resp);
+//                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                catch (Exception exception) {
+                    System.out.println(exception + " has occurred in n50Resp."+n50Resp);
                 }
                 JSONObject perMinResp = null;
                 try {
@@ -106,6 +112,8 @@ public class PerMinuteResposeOfNSE {
                 } catch (JSONException ex) {
                     System.out.println("Problem with perMinResp"+perMinResp);
 //                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                }catch (Exception exception) {
+                    System.out.println(exception + " has occurred in perMinResp."+perMinResp);
                 }
                 //                   System.out.println(resultObject.get("body"));
                 JSONObject bodyJsonObj = new JSONObject();
@@ -114,6 +122,8 @@ public class PerMinuteResposeOfNSE {
                 } catch (JSONException ex) {
                     System.out.println("Problem with bodyJsonObj"+bodyJsonObj);
 //                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception exception) {
+                    System.out.println(exception + " has occurred in bodyJsonObj."+bodyJsonObj);
                 }
                 //                   JSONArray tempArray = resultObject.getJSONArray("body");
                 //                   System.out.println(tempArray);
@@ -123,6 +133,8 @@ public class PerMinuteResposeOfNSE {
                 } catch (JSONException ex) {
                     System.out.println("Problem with dataArray"+dataArray); 
 //                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                }catch (Exception exception) {
+                    System.out.println(exception + " has occurred in dataArray."+dataArray);
                 }
 
                 SimpleDateFormat inputCurrentDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -131,7 +143,8 @@ public class PerMinuteResposeOfNSE {
                 try {
                     lastUpdateTime = inputCurrentDateFormat.parse(strLastUpdTime);
                 } catch (ParseException ex) {
-                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("ParseException with lastUpdateTime"+lastUpdateTime);
+//                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 for (int i = 0; i < dataArray.length(); i++) {
 
@@ -141,6 +154,8 @@ public class PerMinuteResposeOfNSE {
                     } catch (JSONException ex) {
                         System.out.println("Problem with scripObj"+scripObj); 
 //                        Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                    }catch (Exception exception) {
+                        System.out.println(exception + " has occurred in scripObj."+scripObj);
                     }
 
                     ScripData scripData = loadScripData(scripObj, lastUpdateTime);
@@ -159,7 +174,8 @@ public class PerMinuteResposeOfNSE {
             try {
                 Thread.sleep(2 * 1000); //seconds * mulliseconds
             } catch (InterruptedException ex) {
-                Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("InterruptedException with entity"+entity);
+//                Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
             }
             count = count + 1;
 
@@ -212,8 +228,8 @@ public class PerMinuteResposeOfNSE {
             scripData.setLastUpdateTime(lastUpdateTime);
 
         } catch (JSONException ex) {
-            System.out.println("JSONException has occurred");
-        }
+            System.out.println("JSONException has occurred in loadScripData");
+        } 
         return scripData;
 
     }
@@ -241,7 +257,7 @@ public class PerMinuteResposeOfNSE {
         } catch (PreexistingEntityException preexistingEntityException) {
             System.out.println("data exists" + scripData.getScripId() + scripData.getLastUpdateTime());
         } catch (Exception exception) {
-            System.out.println(exception + " has occurred .");
+            System.out.println(exception + " has occurred in saveSripData.");
         }
     }
 }
