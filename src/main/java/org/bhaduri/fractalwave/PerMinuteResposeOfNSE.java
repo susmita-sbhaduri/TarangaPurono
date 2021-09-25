@@ -35,9 +35,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import org.bhaduri.tarangadb.DA.MinutedataDA;
-import org.bhaduri.tarangadb.JPA.exceptions.PreexistingEntityException;
-import org.bhaduri.tarangadb.entities.*;
+import org.bhaduri.taranga.service.*;
+//import org.bhaduri.taranga.service.MasterDataService;
+//import org.bhaduri.tarangadb.DA.MinutedataDA;
+//import org.bhaduri.tarangadb.JPA.exceptions.PreexistingEntityException;
+//import org.bhaduri.tarangadb.entities.*;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -75,8 +77,8 @@ public class PerMinuteResposeOfNSE {
         }
         int count = 0;
         
-        while (flag == 1) {
-//            while (count < 5) {
+//        while (flag == 1) {
+            while (count < 5) {
             CloseableHttpResponse response = null;
             try {
                 response = httpClient.execute(request);
@@ -159,7 +161,9 @@ public class PerMinuteResposeOfNSE {
                     }
 
                     ScripData scripData = loadScripData(scripObj, lastUpdateTime);
-                    saveSripData(scripData);
+                    MasterDataService masterDataService = new MasterDataService();
+                    masterDataService.insertIntoMinutedata(scripData);
+//                    saveSripData(scripData);
 //                        System.out.println("symbol" + scripData.getScripId());
 //                        System.out.println("open" + scripData.getOpenPrice());
 //                        System.out.println("day high" + scripData.getDayHighPrice());
@@ -234,30 +238,30 @@ public class PerMinuteResposeOfNSE {
 
     }
 
-    private void saveSripData(ScripData scripData) {
-        try {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("org.bhaduri_Taranga_jar_1.0-SNAPSHOTPU");
-            MinutedataDA minutedataDA = new MinutedataDA(emf);
-
-            MinutedataPK minDataPk = new MinutedataPK();
-            Minutedata minDataRecord = new Minutedata();
-
-            minDataPk.setScripid(scripData.getScripId());
-            minDataPk.setLastupdateminute(scripData.getLastUpdateTime());
-
-            minDataRecord.setMinutedataPK(minDataPk);
-            minDataRecord.setDayhighprice(scripData.getDayHighPrice());
-            minDataRecord.setDaylastprice(scripData.getDayLastPrice());
-            minDataRecord.setDaylowprice(scripData.getDayLowPrice());
-            minDataRecord.setOpenprice(scripData.getOpenPrice());
-            minDataRecord.setPrevcloseprice(scripData.getPrevClosePrice());
-            minDataRecord.setTotaltradedvolume(scripData.getTotalTradedVolume());
-
-            minutedataDA.create(minDataRecord);
-        } catch (PreexistingEntityException preexistingEntityException) {
-            System.out.println("data exists" + scripData.getScripId() + scripData.getLastUpdateTime());
-        } catch (Exception exception) {
-            System.out.println(exception + " has occurred in saveSripData.");
-        }
-    }
+//    private void saveSripData(ScripData scripData) {
+//        try {
+//            EntityManagerFactory emf = Persistence.createEntityManagerFactory("org.bhaduri_Taranga_jar_1.0-SNAPSHOTPU");
+//            MinutedataDA minutedataDA = new MinutedataDA(emf);
+//
+//            MinutedataPK minDataPk = new MinutedataPK();
+//            Minutedata minDataRecord = new Minutedata();
+//
+//            minDataPk.setScripid(scripData.getScripId());
+//            minDataPk.setLastupdateminute(scripData.getLastUpdateTime());
+//
+//            minDataRecord.setMinutedataPK(minDataPk);
+//            minDataRecord.setDayhighprice(scripData.getDayHighPrice());
+//            minDataRecord.setDaylastprice(scripData.getDayLastPrice());
+//            minDataRecord.setDaylowprice(scripData.getDayLowPrice());
+//            minDataRecord.setOpenprice(scripData.getOpenPrice());
+//            minDataRecord.setPrevcloseprice(scripData.getPrevClosePrice());
+//            minDataRecord.setTotaltradedvolume(scripData.getTotalTradedVolume());
+//
+//            minutedataDA.create(minDataRecord);
+//        } catch (PreexistingEntityException preexistingEntityException) {
+//            System.out.println("data exists" + scripData.getScripId() + scripData.getLastUpdateTime());
+//        } catch (Exception exception) {
+//            System.out.println(exception + " has occurred in saveSripData.");
+//        }
+//    }
 }
