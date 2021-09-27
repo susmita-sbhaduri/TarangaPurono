@@ -50,29 +50,29 @@ public class MasterDataService {
         }
     }
     
-     public void getDvripID(String scriptSym) {
-        MinutedataDA minutedataDA = new MinutedataDA(emf);
-        try {
-            MinutedataPK minDataPk = new MinutedataPK();
-            Minutedata minDataRecord = new Minutedata();
-
-            minDataPk.setScripid(scripData.getScripId());
-            minDataPk.setLastupdateminute(scripData.getLastUpdateTime());
-
-            minDataRecord.setMinutedataPK(minDataPk);
-            minDataRecord.setDayhighprice(scripData.getDayHighPrice());
-            minDataRecord.setDaylastprice(scripData.getDayLastPrice());
-            minDataRecord.setDaylowprice(scripData.getDayLowPrice());
-            minDataRecord.setOpenprice(scripData.getOpenPrice());
-            minDataRecord.setPrevcloseprice(scripData.getPrevClosePrice());
-            minDataRecord.setTotaltradedvolume(scripData.getTotalTradedVolume());
-
-            minutedataDA.create(minDataRecord);
-//            return HedwigResponseCode.SUCCESS;
-        }  catch (PreexistingEntityException preexistingEntityException) {
-            System.out.println("data exists" + scripData.getScripId() + scripData.getLastUpdateTime());
-        } catch (Exception exception) {
-            System.out.println(exception + " has occurred in saveSripData.");
-        }
-    }
+//     public void getDvripID(String scriptSym) {
+//        MinutedataDA minutedataDA = new MinutedataDA(emf);
+//        try {
+//            MinutedataPK minDataPk = new MinutedataPK();
+//            Minutedata minDataRecord = new Minutedata();
+//
+//            minDataPk.setScripid(scripData.getScripId());
+//            minDataPk.setLastupdateminute(scripData.getLastUpdateTime());
+//
+//            minDataRecord.setMinutedataPK(minDataPk);
+//            minDataRecord.setDayhighprice(scripData.getDayHighPrice());
+//            minDataRecord.setDaylastprice(scripData.getDayLastPrice());
+//            minDataRecord.setDaylowprice(scripData.getDayLowPrice());
+//            minDataRecord.setOpenprice(scripData.getOpenPrice());
+//            minDataRecord.setPrevcloseprice(scripData.getPrevClosePrice());
+//            minDataRecord.setTotaltradedvolume(scripData.getTotalTradedVolume());
+//
+//            minutedataDA.create(minDataRecord);
+////            return HedwigResponseCode.SUCCESS;
+//        }  catch (PreexistingEntityException preexistingEntityException) {
+//            System.out.println("data exists" + scripData.getScripId() + scripData.getLastUpdateTime());
+//        } catch (Exception exception) {
+//            System.out.println(exception + " has occurred in saveSripData.");
+//        }
+//    }
 }

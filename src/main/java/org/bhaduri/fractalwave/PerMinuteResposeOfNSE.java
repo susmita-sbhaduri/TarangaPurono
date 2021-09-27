@@ -77,8 +77,8 @@ public class PerMinuteResposeOfNSE {
         }
         int count = 0;
         
-//        while (flag == 1) {
-            while (count < 5) {
+        while (flag == 1) {
+//            while (count < 5) {
             CloseableHttpResponse response = null;
             try {
                 response = httpClient.execute(request);
