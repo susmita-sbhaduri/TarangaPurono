@@ -131,7 +131,7 @@ public class PerMinuteResposeOfNSE {
                 //                   System.out.println(tempArray);
                 JSONArray dataArray = null;
                 try {
-                    dataArray = bodyJsonObj.getJSONArray("data");
+                    dataArray = bodyJsonObj.getJSONArray("data");                    
                 } catch (JSONException ex) {
                     System.out.println("Problem with dataArray"+dataArray); 
 //                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
@@ -148,21 +148,23 @@ public class PerMinuteResposeOfNSE {
                     System.out.println("ParseException with lastUpdateTime"+lastUpdateTime);
 //                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                for (int i = 0; i < dataArray.length(); i++) {
+                int dataArrayCount = dataArray.length();
+                if (dataArrayCount > 0) {
+                    for (int i = 0; i < dataArrayCount; i++) {
 
-                    JSONObject scripObj = null;
-                    try {
-                        scripObj = dataArray.getJSONObject(i);
-                    } catch (JSONException ex) {
-                        System.out.println("Problem with scripObj"+scripObj); 
+                        JSONObject scripObj = null;
+                        try {
+                            scripObj = dataArray.getJSONObject(i);
+                        } catch (JSONException ex) {
+                            System.out.println("Problem with scripObj" + scripObj);
 //                        Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
-                    }catch (Exception exception) {
-                        System.out.println(exception + " has occurred in scripObj."+scripObj);
-                    }
+                        } catch (Exception exception) {
+                            System.out.println(exception + " has occurred in scripObj." + scripObj);
+                        }
 
-                    ScripData scripData = loadScripData(scripObj, lastUpdateTime);
-                    MasterDataService masterDataService = new MasterDataService();
-                    masterDataService.insertIntoMinutedata(scripData);
+                        ScripData scripData = loadScripData(scripObj, lastUpdateTime);
+                        MasterDataService masterDataService = new MasterDataService();
+                        masterDataService.insertIntoMinutedata(scripData);
 //                    saveSripData(scripData);
 //                        System.out.println("symbol" + scripData.getScripId());
 //                        System.out.println("open" + scripData.getOpenPrice());
@@ -172,8 +174,12 @@ public class PerMinuteResposeOfNSE {
 //                        System.out.println("prev close" + scripData.getPrevClosePrice());
 //                        System.out.println("trade volume" + scripData.getTotalTradedVolume());
 //                        System.out.println("last update" + scripData.getLastUpdateTime());
+                    }
+                    //                System.out.println(n50Resp);
                 }
-                //                System.out.println(n50Resp);
+                else{
+                    System.out.println("Value of dataArrayCount"+dataArrayCount);
+                }
             }
             try {
                 Thread.sleep(3 * 1000); //seconds * mulliseconds
