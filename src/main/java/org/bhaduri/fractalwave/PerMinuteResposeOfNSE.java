@@ -148,8 +148,9 @@ public class PerMinuteResposeOfNSE {
                     System.out.println("ParseException with lastUpdateTime"+lastUpdateTime);
 //                    Logger.getLogger(PerMinuteResposeOfNSE.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                int dataArrayCount = dataArray.length();
-                if (dataArrayCount > 0) {
+                int dataArrayCount = 0;
+                if (dataArray != null) {
+                    dataArrayCount = dataArray.length();
                     for (int i = 0; i < dataArrayCount; i++) {
 
                         JSONObject scripObj = null;
@@ -176,9 +177,8 @@ public class PerMinuteResposeOfNSE {
 //                        System.out.println("last update" + scripData.getLastUpdateTime());
                     }
                     //                System.out.println(n50Resp);
-                }
-                else{
-                    System.out.println("Value of dataArrayCount"+dataArrayCount);
+                } else {
+                    System.out.println("Value of dataArrayCount" + dataArrayCount);
                 }
             }
             try {
