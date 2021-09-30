@@ -68,13 +68,19 @@ public class PerMinuteResposeOfNSE {
 //        LocalTime endTime = LocalTime.parse("18:31:00"); //Hour-1:24, min, sec
 
         int flag = 0;
-
-        if (currentTime.compareTo(startTime) > 0 && endTime.compareTo(currentTime) > 0) {
-            flag = 1;
-            System.out.println("startTime 1" + startTime);
-            System.out.println("Time 1= " + currentTime);
-            System.out.println("endTime 1" + endTime);
+        
+        while (flag == 0) {
+            if (currentTime.compareTo(startTime) > 0 && endTime.compareTo(currentTime) > 0) {
+                flag = 1;
+                System.out.println("startTime 1" + startTime);
+                System.out.println("Time 1= " + currentTime);
+                System.out.println("endTime 1" + endTime);
+            }
+            strResult = formatCurrent.format(new Date());
+            currentTime = LocalTime.parse(strResult);
         }
+
+        
         int count = 0;
         
         while (flag == 1) {
