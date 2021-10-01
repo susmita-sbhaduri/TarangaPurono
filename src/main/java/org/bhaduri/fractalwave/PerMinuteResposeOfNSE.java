@@ -58,7 +58,7 @@ public class PerMinuteResposeOfNSE {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //date update for scheduling
 
-        LocalTime startTime = LocalTime.parse("09:15:00"); //Hour-1:24, min, sec       
+        LocalTime startTime = LocalTime.parse("09:20:00"); //Hour-1:24, min, sec       
 
         SimpleDateFormat formatCurrent = new SimpleDateFormat("HH:mm:ss");
         String strResult = formatCurrent.format(new Date());
